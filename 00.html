@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>БГ авантура</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-image: url('./bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+  <script src="common.js"></script>
+
+  <!-- LOGO BAR -->
+  
+
+  <div class="overlay-modern">
+    <div class="logo-inside">
+        <a href="index.html">
+            <img src="logo.png" alt="BG авантура лого" />
+        </a>
+    </div>
+    <div class="game-title" data-i18n="index_title">БГ АВАНТУРА</div>
+    <div class="game-subtitle" data-i18n="index_subtitle">Откључај тајне Београда</div>
+
+    <div class="slider-wrapper">
+      <div class="nav left" onclick="prev()" id="navLeft">&#10094;</div>
+
+      <div id="slides">
+        <div class="slide active">
+          <h2 data-i18n="index_slide1_title">ПРАВИЛА ИГРЕ</h2>
+          <p data-i18n="index_slide1_text">Авантура се састоји од посећивања локација значајних за историју и културу Београда и Србије.</p>
+        </div>
+
+        <div class="slide">
+          <p data-i18n="index_slide2_text1">Свака локација је један задатак. Сваки задатак има две загонетке:</p>
+          <ul>
+            <li data-i18n="index_slide2_li1">прва загонетка открива следећу локацију</li>
+            <li data-i18n="index_slide2_li2">друга загонетка се решава на самој локацији</li>
+          </ul>
+        </div>
+
+        <div class="slide">
+          <h2 data-i18n="index_slide3_title">ПРОГРЕСИЈА</h2>
+          <p data-i18n="index_slide3_text">Да би се прешло на следећу локацију, потребно је испунити све захтеве на тренутној. Без прескакања!</p>
+        </div>
+
+        <div class="slide">
+          <h2 data-i18n="index_slide4_title">ТЕХНОЛОГИЈА</h2>
+          <p data-i18n="index_slide4_text">Игра је конципирана тако да је потребно повезивати закључке на основу информација које нису увек доступне на лицу места. Зато је неопходно коришћење интернета, навигације, мапа...</p>
+          <p style="margin-top: 15px;"><strong data-i18n="index_slide4_strong">Не препоручујемо коришћење вештачке интелигенције — тако игра губи драж.</strong></p>
+        </div>
+
+        <div class="slide">
+          <h2 data-i18n="index_slide5_title">УНОС ОДГОВОРА</h2>
+          <p data-i18n="index_slide5_text">Своје одговоре уносите у форме на одговарајућим страницама. Ако је одговор тачан, аутоматски прелазите на следећи ниво.</p>
+        </div>
+
+        <div class="slide final-slide">
+          <h2 data-i18n="index_slide6_title">СРЕЋНО!</h2>
+          <p style="margin-bottom: 25px;" data-i18n="index_slide6_text">Авантура почиње сада.</p>
+          <div style="text-align:center;">
+            <button id="startBtn" onclick="window.location.href='01.html'" data-i18n="index_start_btn">Започни игру</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav right" onclick="next()" id="navRight">&#10095;</div>
+    </div>
+
+    <div class="dots-container" id="dotsContainer"></div>
+  </div>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll(".slide");
+    const navLeft = document.getElementById("navLeft");
+    const navRight = document.getElementById("navRight");
+    const dotsContainer = document.getElementById("dotsContainer");
+
+    slides.forEach((_, index) => {
+      const dot = document.createElement("button");
+      dot.className = "dot" + (index === 0 ? " active" : "");
+      dot.onclick = () => goTo(index);
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll(".dot");
+
+    function updateUI() {
+      slides.forEach((s, i) => s.classList.toggle("active", i === current));
+      navLeft.classList.toggle("hidden", current === 0);
+      navRight.classList.toggle("hidden", current === slides.length - 1);
+      dots.forEach((d, i) => d.classList.toggle("active", i === current));
+    }
+
+    function next() {
+      if (current < slides.length - 1) { current++; updateUI(); }
+    }
+
+    function prev() {
+      if (current > 0) { current--; updateUI(); }
+    }
+
+    function goTo(index) {
+      current = index;
+      updateUI();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const slidesContainer = document.getElementById("slides");
+
+    slidesContainer.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    slidesContainer.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) next();
+      if (touchEndX > touchStartX + 50) prev();
+    }, { passive: true });
+
+    updateUI();
+  </script>
+</body>
+</html>

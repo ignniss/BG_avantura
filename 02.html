@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БГА 02</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('./maketa.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body style="display: none;" id="mainBody">
+    <script src="common.js"></script>
+    <script>
+        window.trenutniNivo = 2;
+        if (!blokirajStranicu(window.trenutniNivo)) {
+            document.getElementById('mainBody').style.display = 'block';
+        }
+    </script>
+
+      
+
+    <div class="overlay-modern">
+        <div class="logo-inside">
+        <a href="index.html">
+            <img src="logo.png" alt="BG авантура лого" />
+        </a>
+    </div>
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="header-bar">
+            <div class="timer-box">
+                <span class="timer-icon">⏱️</span>
+                <div class="tajmer" id="tajmer">0:00:00</div>
+                <button class="restart-timer-btn" title="Рестартуј време" onclick="restartujVreme(document.getElementById('poruka'))">↻</button>
+            </div>
+            <div class="level-badge"></div>
+        </div>
+
+        <h1 class="nivo-naslov" data-i18n="nivo2_title">МУДРОСТ ЈЕ У БРОЈЕВИМА</h1>
+
+        <div class="pitanje-card">
+            <p style="font-size: 1.4em; font-weight: 700; color: rgb(255, 187, 0); margin-bottom: 15px; letter-spacing: 2px;" data-i18n="nivo2_numbers">16, 2, 9, 10, 13, 4, 15</p>
+            <p data-i18n-html="nivo2_poem">У имену места следећег<br>Ова реч се крије,<br>Замени је турском<br>И биће ти јасније</p>
+        </div>
+
+        <div class="hintovi">
+            <button class="hint-btn" id="hint1" onclick="pokaziHint(1)" data-i18n="btn_help">ПОМОЋ</button>
+            <button class="hint-btn-final" id="hintFinal" onclick="pokaziFinalHint()" data-i18n="final_hint_btn">КОНАЧНА ПОМОЋ</button>
+        </div>
+
+        <div class="forma">
+            <input type="text" maxlength="80" class="input-polje" id="odgovorInput" data-i18n-placeholder="input_placeholder" placeholder="Унесите одговор...">
+        </div>
+
+        <div id="poruka" class="hint-poruka" style="display: none;"></div>
+
+        <button class="proveri-btn" id="proveriBtn" onclick="proveri()" data-i18n="btn_check">ПРОВЕРИ ОДГОВОР</button>
+        
+    </div>
+
+    <script>
+        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
+        inicijalizujTimer(document.getElementById('tajmer'));
+
+        const porukaElement = document.getElementById('poruka');
+        const proveriBtn = document.getElementById('proveriBtn');
+        const input = document.getElementById('odgovorInput');
+
+        document.querySelectorAll('.hint-btn, .hint-btn-final').forEach(btn => btn.disabled = false);
+        input.value = '';
+        porukaElement.style.display = 'none';
+        proveriBtn.disabled = false;
+        input.disabled = false;
+
+        postaviEnterHandler(input, proveri);
+
+        let finalHintTimer = null;
+        let finalHintSeconds = 0;
+        let finalHintState = 'idle';
+
+        function pokaziHint(br) {
+            const btn = document.getElementById('hint' + br);
+            if (btn.disabled) return;
+            btn.disabled = true;
+            prikaziPoruku(porukaElement, t('nivo2_hint1'), 'info');
+        }
+
+        function pokaziFinalHint() {
+            const btn = document.getElementById('hintFinal');
+            if (finalHintState === 'idle') {
+                finalHintState = 'countdown';
+                finalHintSeconds = 15;
+                btn.classList.add('countdown');
+                prikaziPoruku(porukaElement, `<strong>${t('final_hint_confirm_title')}</strong><br>${t('final_hint_confirm_location')}`, 'info');
+                updateFinalHintButton();
+                finalHintTimer = setInterval(() => {
+                    finalHintSeconds--;
+                    updateFinalHintButton();
+                    if (finalHintSeconds <= 0) {
+                        clearInterval(finalHintTimer);
+                        finalHintState = 'ready';
+                        btn.classList.remove('countdown');
+                        btn.textContent = t('btn_reveal_location');
+                        prikaziPoruku(porukaElement, t('final_hint_ready_location'), 'info');
+                    }
+                }, 1000);
+            } else if (finalHintState === 'countdown') {
+                clearInterval(finalHintTimer);
+                finalHintState = 'idle';
+                btn.classList.remove('countdown');
+                btn.textContent = t('final_hint_btn');
+                prikaziPoruku(porukaElement, t('final_hint_cancelled'), 'info');
+            } else if (finalHintState === 'ready') {
+                btn.disabled = true;
+                const koordinate = t('nivo2_final_coords');
+                const mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(koordinate)}`;
+                prikaziPoruku(porukaElement, `${t('final_hint_coordinates')}<br><a href="${mapsUrl}" target="_blank" style="color:#f39c12; text-decoration:underline; font-weight:bold;">${koordinate}</a><br><span style="font-size:0.85em; color:#aaa;">${t('final_hint_map')}</span>`, 'info');
+            }
+        }
+
+        function updateFinalHintButton() {
+            const btn = document.getElementById('hintFinal');
+            if (finalHintState === 'countdown') {
+                btn.textContent = t('final_hint_countdown', {s: finalHintSeconds});
+            }
+        }
+
+        function proveri() {
+            let unos = input.value.trim();
+            if (unos === '') {
+                prikaziPoruku(porukaElement, t('nivo2_empty_msg'), 'error');
+                return;
+            }
+            let originalLower = unos.toLowerCase();
+            let bezRazmaka = originalLower.replace(/[\s\-–—]+/g, '');
+            const bajrakliVarijante = ['бајракли', 'bajrakli', 'барјакли', 'barjakli', 'bayrakli'];
+            const dzamijaVarijante = ['џамија', 'džamija', 'dzamija', 'джамија', 'mosque'];
+            let pronadjenBajrakli = bajrakliVarijante.some(v => originalLower.includes(v));
+            let pronadjenDzamija  = dzamijaVarijante.some(v => originalLower.includes(v));
+            if (!pronadjenBajrakli || !pronadjenDzamija) {
+                pronadjenBajrakli = bajrakliVarijante.some(v => bezRazmaka.includes(v));
+                pronadjenDzamija  = dzamijaVarijante.some(v => bezRazmaka.includes(v));
+            }
+            if (pronadjenBajrakli && pronadjenDzamija) {
+                prikaziPoruku(porukaElement, t('msg_correct'), 'success');
+                const hintBtn = document.getElementById('hint1');
+                const hintFinal = document.getElementById('hintFinal');
+                onemoguciInterakciju(proveriBtn, input, [hintBtn, hintFinal]);
+                oznaciKaoZavrseno(2);
+                setTimeout(() => { window.location.href = '03.html'; }, 4000);
+            } else {
+                prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
+            }
+        }
+    </script>
+</body>
+</html>

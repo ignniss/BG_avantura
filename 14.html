@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БГА 14</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('./bg.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .final-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .trophy {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+        .final-time {
+            font-size: 1.8em;
+            color: #f39c12;
+            font-weight: bold;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .final-time-label {
+            font-size: 0.9em;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .final-message {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin: 20px 0;
+        }
+        .restart-btn {
+            margin-top: 25px;
+            padding: 14px 35px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+    </style>
+</head>
+<body style="display: none;" id="mainBody">
+    <script src="common.js"></script>
+    <script>
+        window.trenutniNivo = 14;
+        if (!blokirajStranicu(window.trenutniNivo)) {
+            document.getElementById('mainBody').style.display = 'block';
+        }
+    </script>
+
+    <div class="overlay-modern">
+        <div class="logo-inside">
+        <a href="index.html">
+            <img src="logo.png" alt="BG авантура лого" />
+        </a>
+    </div>
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="header-bar" style="justify-content: center;">
+            
+        </div>
+
+        <div class="final-card">
+            <div class="trophy">🏆</div>
+            <h1 class="nivo-naslov" data-i18n="final_title" style="font-size: 2em; margin-bottom: 10px;">ЧЕСТИТАМО!</h1>
+            <p data-i18n="final_subtitle" style="font-size: 1.2em; color: #f39c12; font-weight: bold; margin-bottom: 20px;">Успешно сте завршили БГ Авантуру!</p>
+            
+            <div class="final-time-label" data-i18n="final_time_label">ВАШЕ ВРЕМЕ</div>
+            <div class="final-time" id="finalTime">0:00:00</div>
+            
+            <p class="final-message" data-i18n-html="final_text">
+                Открили сте делић тајни које Београд крије.<br>
+                Надамо се да сте уживали у авантури и да сте<br>
+                упознали град на један потпуно нов начин.<br>
+                Хвала што сте играли!<br>
+                Видимо се у некој новој игри...
+            </p>
+
+            <button class="restart-btn" onclick="ponovoIgraj()" data-i18n="final_restart_btn">ИГРАЈ ПОНОВО</button>
+        </div>
+    </div>
+
+    <script>
+        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
+        inicijalizujTimer(document.getElementById('tajmer'));
+
+        const tajmerElement = document.getElementById('tajmer');
+        const finalTimeElement = document.getElementById('finalTime');
+        
+        function syncFinalTime() {
+            finalTimeElement.textContent = tajmerElement.textContent;
+        }
+        
+        syncFinalTime();
+        setInterval(syncFinalTime, 1000);
+
+        function ponovoIgraj() {
+            if (confirm('Да ли сте сигурни да желите да почнете испочетка? Сва постигнућа ће бити обрисана.')) {
+                localStorage.removeItem('escape_room_vreme_pocetak');
+                localStorage.removeItem('escape_room_completed');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

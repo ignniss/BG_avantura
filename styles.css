@@ -1,0 +1,730 @@
+/* ============================================
+   BGA AVANTURA - KOMPLETAN STIL
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ============================================
+   GLASSMORPHISM OVERLAY
+   ============================================ */
+.overlay-modern {
+    background: rgba(20, 20, 30, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   HEADER & PROGRESS
+   ============================================ */
+.progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgb(255, 187, 0), #d6e622);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.timer-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timer-icon {
+    font-size: 1.3em;
+}
+
+.tajmer {
+    font-size: 1.3em;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+    color: #f0f0f0;
+    min-width: 90px;
+    text-align: center;
+}
+
+.restart-timer-btn {
+    background: rgba(192, 57, 43, 0.15);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.restart-timer-btn:hover {
+    background: rgba(192, 57, 43, 0.35);
+    transform: rotate(180deg);
+}
+
+.level-badge {
+    background: linear-gradient(135deg, rgba(255, 187, 0, 0.2), rgba(255, 187, 0, 0.05));
+    border: 1px solid rgba(255, 187, 0, 0.3);
+    color: rgb(255, 187, 0);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   NASLOVI & KARTICE
+   ============================================ */
+.nivo-naslov {
+    color: rgb(255, 187, 0);
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    line-height: 1.3;
+}
+
+.pitanje-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 187, 0, 0.2);
+    padding: 40px 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    font-size: 1.3em;
+    line-height: 1.7;
+}
+
+.pitanje-card::before {
+    content: "📜";
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5em;
+    opacity: 0.3;
+}
+
+.pitanje-datum .date-label {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.pitanje-datum .date-display {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: rgb(255, 187, 0);
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================
+   FORMA & INPUT
+   ============================================ */
+.forma {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.input-polje {
+    width: 100%;
+    max-width: 500px;
+    height: 50px;
+    font-size: 1.15em;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-polje::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+.input-polje:focus {
+    border-color: rgb(255, 187, 0);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 20px rgba(255, 187, 0, 0.15);
+}
+
+.input-polje:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Specijalni input za BGA03 */
+.input-polje-special {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5em;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: white;
+    background: rgba(197, 14, 4, 0.7);
+    font-weight: bold;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-polje-special:focus {
+    border-color: rgb(255, 187, 0);
+    box-shadow: 0 0 15px rgba(255, 187, 0, 0.2);
+}
+
+.input-polje-special::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8em;
+}
+
+/* ============================================
+   DUGMAD - JEDNAKA VELIČINA, TRANSPARENTNOST
+   ============================================ */
+.hintovi {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.hint-btn {
+    padding: 12px 32px;
+    font-size: 1em;
+    font-weight: 600;
+    min-width: 200px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(10, 121, 168, 0.85), rgba(13, 90, 122, 0.85));
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(10, 121, 168, 0.25);
+    letter-spacing: 0.5px;
+    opacity: 0.92;
+}
+
+.hint-btn:hover {
+    background: linear-gradient(135deg, rgba(19, 143, 197, 0.95), rgba(10, 121, 168, 0.95));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(10, 121, 168, 0.35);
+    opacity: 1;
+}
+
+.hint-btn:disabled {
+    background: rgba(74, 74, 74, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.5;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.hint-btn-final {
+    padding: 12px 32px;
+    font-size: 1em;
+    font-weight: 700;
+    min-width: 200px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(192, 57, 43, 0.85), rgba(169, 50, 38, 0.85));
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(192, 57, 43, 0.25);
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+}
+
+.hint-btn-final:hover {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.95), rgba(192, 57, 43, 0.95));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.35);
+    opacity: 1;
+}
+
+.hint-btn-final.countdown {
+    background: rgba(255, 0, 0, 0.85);
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.hint-btn-final.countdown:hover {
+    background: rgba(255, 0, 0, 0.85);
+    opacity: 1;
+}
+
+.hint-btn-final:disabled {
+    background: rgba(74, 74, 74, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.5;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.proveri-btn {
+    display: block;
+    margin: 0 auto 25px;
+    padding: 12px 32px;
+    font-size: 1em;
+    font-weight: 700;
+    min-width: 200px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(10, 121, 168, 0.9), rgba(13, 90, 122, 0.9));
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(10, 121, 168, 0.25);
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
+.proveri-btn:hover {
+    background: linear-gradient(135deg, rgba(19, 143, 197, 0.95), rgba(10, 121, 168, 0.95));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(10, 121, 168, 0.35);
+    opacity: 1;
+}
+
+.proveri-btn:disabled {
+    background: rgba(74, 74, 74, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.5;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   PORUKE
+   ============================================ */
+.hint-poruka {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 18px 24px;
+    border-radius: 12px;
+    font-size: 1.15em;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.poruka-boja-narandzasta { color: #f39c12; }
+.poruka-boja-zelena { color: #2ecc71; font-size: 1.3em; font-weight: 700; }
+.poruka-boja-crvena { color: #e74c3c; }
+
+/* ============================================
+   INDEX STRANICA
+   ============================================ */
+.index-body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./bg.jpg');
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+}
+
+.lang-flags {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.lang-flag {
+    font-size: 1.8em;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    filter: grayscale(0.5);
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.lang-flag:hover,
+.lang-flag.active {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: grayscale(0);
+}
+
+.game-title {
+    font-size: 3.5em;
+    color: rgb(255, 187, 0);
+    text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.9);
+    margin-bottom: 10px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.game-subtitle {
+    font-size: 1.2em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.slider-wrapper {
+    width: 100%;
+    max-width: 850px;
+    position: relative;
+    padding: 0 60px;
+}
+
+#slides {
+    width: 100%;
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.slide {
+    display: none;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.4s ease;
+    width: 100%;
+    padding: 10px;
+}
+
+.slide.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide h2 {
+    font-size: 1.8em;
+    color: rgb(255, 187, 0);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.slide p {
+    font-size: 1.4em;
+    line-height: 1.6;
+    font-weight: 400;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.slide ul {
+    margin: 20px 0 20px 40px;
+    font-size: 1.25em;
+    line-height: 1.7;
+}
+
+.slide ul li {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.slide strong {
+    color: rgb(255, 187, 0);
+}
+
+.nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.2em;
+    cursor: pointer;
+    user-select: none;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 10px 15px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+
+.nav:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nav.left { left: 0; }
+.nav.right { right: 0; }
+.nav.hidden { opacity: 0; pointer-events: none; }
+
+.dots-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+}
+
+.dot.active {
+    background: rgb(255, 187, 0);
+    transform: scale(1.3);
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+#startBtn {
+    margin: 35px auto 0;
+    padding: 16px 50px;
+    font-size: 1.4em;
+    background: linear-gradient(135deg, #267886, #1a5c66);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: block;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(38, 120, 134, 0.4);
+    transition: all 0.3s ease;
+}
+
+#startBtn:hover {
+    background: linear-gradient(135deg, #2a8a9a, #1e6b77);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(38, 120, 134, 0.6);
+}
+
+.final-slide h2 {
+    font-size: 2.5em;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .overlay-modern { padding: 20px; border-radius: 16px; }
+    .nivo-naslov { font-size: 1.5em; }
+    .date-display { font-size: 1.2em; }
+    .header-bar { justify-content: center; }
+    .input-polje { font-size: 1em; height: 46px; }
+    .proveri-btn, .hint-btn, .hint-btn-final { font-size: 1em; padding: 12px 30px; min-width: 160px; }
+    .hint-poruka { font-size: 1em; }
+
+    .game-title { font-size: 2.2em; margin-top: 60px; padding: 0 15px; }
+    .game-subtitle { font-size: 0.95em; padding: 0 20px; }
+    .slider-wrapper { padding: 0 45px; }
+    .slide h2 { font-size: 1.4em; }
+    .slide p { font-size: 1.1em; }
+    .slide ul { font-size: 1.05em; margin-left: 25px; }
+    .nav { width: 40px; height: 40px; font-size: 1.6em; }
+    #startBtn { font-size: 1.15em; padding: 14px 35px; }
+    .lang-flags { top: 10px; right: 10px; padding: 6px 8px; }
+    .lang-flag { font-size: 1.5em; }
+}
+
+
+/* ============================================
+   LOGO BAR (za stranice 01-14 i 00)
+   ============================================ */
+.logo-bar {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+.logo-bar a {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.logo-bar .logo-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #f5e6b0, #f0c27a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    line-height: 1.1;
+}
+
+.logo-bar .logo-subtitle {
+    font-size: 1rem;
+    display: block;
+    letter-spacing: 2px;
+    color: #a0b8db;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    font-weight: 400;
+    margin-top: 2px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.logo-wrapper {
+      display: flex;
+      align-items: left;
+      gap: 14px;
+      text-align: left;  
+    }
+
+    .logo-img {
+      width: 160px;
+      height: 90px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.25s ease;      
+      background: black;
+    }
+    .logo-img:hover {
+      transform: scale(1.02);
+    }
+
+    .logo-text {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #f5e6b0, #f0c27a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  line-height: 1.1;
+}
+
+.logo-subtitle {
+  font-size: 1rem;
+  display: block;
+  letter-spacing: 2px;
+  color: #a0b8db;  
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  font-weight: 400;
+  margin-top: 2px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+.logo-inside {
+    text-align: left;
+    margin-bottom: 15px;
+}
+.logo-inside a {
+    display: inline-block;
+    text-decoration: none;
+}
+.logo-inside img {
+    width: 160px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    transition: transform 0.25s ease;
+}
+.logo-inside img:hover {
+    transform: scale(1.02);
+}

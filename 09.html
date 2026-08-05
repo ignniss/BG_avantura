@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БГА 09</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('./bg1.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .puzzle-img {
+            display: block;
+            width: auto;
+            max-width: 90%;
+            height: auto;
+            max-height: 260px;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.4);
+            padding: 8px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body style="display: none;" id="mainBody">
+    <script src="common.js"></script>
+    <script>
+        window.trenutniNivo = 9;
+        if (!blokirajStranicu(window.trenutniNivo)) {
+            document.getElementById('mainBody').style.display = 'block';
+        }
+    </script>
+
+    <div class="overlay-modern">
+        <div class="logo-inside">
+        <a href="index.html">
+            <img src="logo.png" alt="BG авантура лого" />
+        </a>
+    </div>
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="header-bar">
+            <div class="timer-box">
+                <span class="timer-icon">⏱️</span>
+                <div class="tajmer" id="tajmer">0:00:00</div>
+                <button class="restart-timer-btn" title="Рестартуј време" onclick="restartujVreme(document.getElementById('poruka'))">↻</button>
+            </div>
+            <div class="level-badge"></div>
+        </div>
+
+        <h1 class="nivo-naslov" data-i18n="nivo9_title">ТАМО ГДЕ СЕ ВЕЛИКАНИ СРЕЋУ</h1>
+
+        <div class="pitanje-card">
+            <p data-i18n-html="nivo9_poem">Песник славни, у капуту бронзаном,<br>И после живота стражу чува.<br>Куда му поглед упорно ходи,<br>тамо следећи корак те води.<br>Имена велика ту прошлост дозива,<br>у знацима немим порука се скрива.</p>
+        </div>
+
+        <img src="vlkn.png" alt="Загонетка" class="puzzle-img">
+
+        <div class="hintovi">
+            <button class="hint-btn" id="hint1" onclick="pokaziHint(1)" data-i18n="btn_help1">ПОМОЋ 1</button>
+            <button class="hint-btn" id="hint2" onclick="pokaziHint(2)" data-i18n="btn_help2">ПОМОЋ 2</button>
+            <button class="hint-btn" id="hint3" onclick="pokaziHint(3)" data-i18n="btn_help3">ПОМОЋ 3</button>
+            <button class="hint-btn" id="hint4" onclick="pokaziHint(4)" data-i18n="btn_help4">ПОМОЋ 4</button>
+            <button class="hint-btn" id="hint5" onclick="pokaziHint(5)" data-i18n="btn_help5">ПОМОЋ 5</button>
+            <button class="hint-btn" id="hint6" onclick="pokaziHint(6)" data-i18n="btn_help6">ПОМОЋ 6</button>
+            <button class="hint-btn-final" id="hintFinal" onclick="pokaziFinalHint()" data-i18n="final_hint_btn">КОНАЧНА ПОМОЋ</button>
+        </div>
+
+        <div class="forma">
+            <input type="text" maxlength="80" class="input-polje" id="odgovorInput" data-i18n-placeholder="input_placeholder" placeholder="Унесите одговор...">
+        </div>
+
+        <div id="poruka" class="hint-poruka" style="display: none;"></div>
+
+        <button class="proveri-btn" id="proveriBtn" onclick="proveri()" data-i18n="btn_check">ПРОВЕРИ ОДГОВОР</button>
+
+    </div>
+
+    <script>
+        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
+        inicijalizujTimer(document.getElementById('tajmer'));
+
+        const porukaElement = document.getElementById('poruka');
+        const proveriBtn = document.getElementById('proveriBtn');
+        const input = document.getElementById('odgovorInput');
+
+        let finalHintTimer = null;
+        let finalHintSeconds = 0;
+        let finalHintState = 'idle';
+
+        document.querySelectorAll('.hint-btn, .hint-btn-final').forEach(btn => btn.disabled = false);
+        input.value = '';
+        porukaElement.style.display = 'none';
+        proveriBtn.disabled = false;
+        input.disabled = false;
+
+        postaviEnterHandler(input, proveri);
+
+        function pokaziHint(br) {
+            const btn = document.getElementById('hint' + br);
+            if (btn.disabled) return;
+            btn.disabled = true;
+            let key = 'nivo9_hint' + br;
+            prikaziPoruku(porukaElement, t(key), 'info');
+        }
+
+        function pokaziFinalHint() {
+            const btn = document.getElementById('hintFinal');
+            if (finalHintState === 'idle') {
+                finalHintState = 'countdown';
+                finalHintSeconds = 15;
+                btn.classList.add('countdown');
+                prikaziPoruku(porukaElement, `<strong>${t('final_hint_confirm_title')}</strong><br>${t('final_hint_confirm_answer')}`, 'info');
+                updateFinalHintButton();
+                finalHintTimer = setInterval(() => {
+                    finalHintSeconds--;
+                    updateFinalHintButton();
+                    if (finalHintSeconds <= 0) {
+                        clearInterval(finalHintTimer);
+                        finalHintState = 'ready';
+                        btn.classList.remove('countdown');
+                        btn.textContent = t('btn_reveal_answer');
+                        prikaziPoruku(porukaElement, t('final_hint_ready_answer'), 'info');
+                    }
+                }, 1000);
+            } else if (finalHintState === 'countdown') {
+                clearInterval(finalHintTimer);
+                finalHintState = 'idle';
+                btn.classList.remove('countdown');
+                btn.textContent = t('final_hint_btn');
+                prikaziPoruku(porukaElement, t('final_hint_cancelled'), 'info');
+            } else if (finalHintState === 'ready') {
+                btn.disabled = true;
+                const resenje = t('nivo9_final_hint');
+                prikaziPoruku(porukaElement, `${t('final_hint_coordinates')}<br><strong style="color:#f39c12; font-size:1.2em;">${resenje}</strong>`, 'info');
+            }
+        }
+
+        function updateFinalHintButton() {
+            const btn = document.getElementById('hintFinal');
+            if (finalHintState === 'countdown') {
+                btn.textContent = t('final_hint_countdown', {s: finalHintSeconds});
+            }
+        }
+
+        function proveri() {
+            let unos = input.value.trim().toLowerCase();
+            if (unos === '') {
+                prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
+                return;
+            }
+
+            // Transliteracija
+            unos = unos
+                .replace(/ћ/g, 'ć').replace(/ч/g, 'č').replace(/џ/g, 'dž')
+                .replace(/ш/g, 'š').replace(/ђ/g, 'đ').replace(/ж/g, 'ž')
+                .replace(/љ/g, 'lj').replace(/њ/g, 'nj');
+
+            const normalizovan = unos.trim();
+
+            const duraVarijante = [
+                'đura', 'djura', 'dura', 'đura jakšić', 'djura jaksic',
+                'dura jaksic', 'đura jaksic', 'djura jakšić', 'dura jakšić',
+                'jakšić', 'jaksic', 'djura jaksić', 'đura jaksić'
+            ];
+
+            let pronadjen = duraVarijante.some(v => normalizovan.includes(v));
+
+            if (pronadjen) {
+                prikaziPoruku(porukaElement, t('msg_correct'), 'success');
+                const hintBtns = [];
+                for (let i = 1; i <= 6; i++) {
+                    hintBtns.push(document.getElementById('hint' + i));
+                }
+                hintBtns.push(document.getElementById('hintFinal'));
+                onemoguciInterakciju(proveriBtn, input, hintBtns);
+                oznaciKaoZavrseno(9);
+                setTimeout(() => { window.location.href = '10.html'; }, 4000);
+            } else {
+                prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
+            }
+        }
+    </script>
+</body>
+</html>

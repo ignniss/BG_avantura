@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БГА 03</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('./bajrakli.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body style="display: none;" id="mainBody">
+    <script src="common.js"></script>
+    <script>
+        window.trenutniNivo = 3;
+        if (!blokirajStranicu(window.trenutniNivo)) {
+            document.getElementById('mainBody').style.display = 'block';
+        }
+    </script>
+
+    
+    <div class="overlay-modern">
+        <div class="logo-inside">
+        <a href="index.html">
+            <img src="logo.png" alt="BG авантура лого" />
+        </a>
+    </div>
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="header-bar">
+            <div class="timer-box">
+                <span class="timer-icon">⏱️</span>
+                <div class="tajmer" id="tajmer">0:00:00</div>
+                <button class="restart-timer-btn" title="Рестартуј време" onclick="restartujVreme(document.getElementById('poruka'))">↻</button>
+            </div>
+            <div class="level-badge"></div>
+        </div>
+
+        <h1 class="nivo-naslov" data-i18n="nivo3_title">МИСТЕРИЈЕ ОРИЈЕНТА</h1>
+
+        <div class="pitanje-card">
+            <p data-i18n-html="nivo3_poem">Деведесет девет звезда с осам светлих крака,<br>На три стране блистају, светлост не јењава<br>Свака носи име бога и људских врлина.<br>Чекају три броја мудрост да пронађеш:<br>Први број стоји где станује лето,<br>Други број блиста зора где свиће.<br>Трећи број почива где дан се смирује,<br>Упиши их све, нек тајне више не буде.</p>
+        </div>
+
+        <div class="hintovi">
+            <div class="hintovi">
+            <button class="hint-btn" id="hint1" onclick="pokaziHint(1)" data-i18n="btn_help1">ПОМОЋ 1</button>
+            <button class="hint-btn" id="hint2" onclick="pokaziHint(2)" data-i18n="btn_help2">ПОМОЋ 2</button>
+            <button class="hint-btn" id="hint3" onclick="pokaziHint(3)" data-i18n="btn_help3">ПОМОЋ 3</button>
+            <button class="hint-btn-final" id="hintFinal" onclick="pokaziFinalHint()" data-i18n="final_hint_btn">КОНАЧНА ПОМОЋ</button>
+</div>
+        </div>
+
+        <div class="forma">
+            <input type="text" maxlength="2" class="input-polje-special" id="broj1" placeholder="00">
+            <input type="text" maxlength="2" class="input-polje-special" id="broj2" placeholder="00">
+            <input type="text" maxlength="2" class="input-polje-special" id="broj3" placeholder="00">
+        </div>
+
+        <div id="poruka" class="hint-poruka" style="display: none;"></div>
+
+        <button class="proveri-btn" id="proveriBtn" onclick="proveri()" data-i18n="btn_check">ПРОВЕРИ ОДГОВОР</button>
+
+        </div>
+
+    <script>
+        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
+        inicijalizujTimer(document.getElementById('tajmer'));
+
+        const porukaElement = document.getElementById('poruka');
+        const proveriBtn = document.getElementById('proveriBtn');
+        const broj1 = document.getElementById('broj1');
+        const broj2 = document.getElementById('broj2');
+        const broj3 = document.getElementById('broj3');
+        
+        let finalHintTimer = null;
+        let finalHintSeconds = 0;
+        let finalHintState = 'idle';
+
+        document.querySelectorAll('.hint-btn, .hint-btn-final').forEach(btn => btn.disabled = false);
+        broj1.value = broj2.value = broj3.value = '';
+        porukaElement.style.display = 'none';
+        proveriBtn.disabled = false;
+        broj1.disabled = broj2.disabled = broj3.disabled = false;
+
+        [broj1, broj2, broj3].forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 2 && index < 2) {
+                    [broj1, broj2, broj3][index + 1].focus();
+                }
+            });
+        });
+
+        postaviEnterHandler(broj1, proveri);
+        postaviEnterHandler(broj2, proveri);
+        postaviEnterHandler(broj3, proveri);
+
+        function pokaziHint(br) {
+            const btn = document.getElementById('hint' + br);
+            if (btn.disabled) return;
+            btn.disabled = true;
+            let key = 'nivo3_hint' + br;
+            prikaziPoruku(porukaElement, t(key), 'info');
+        }
+        function pokaziFinalHint() {
+    const btn = document.getElementById('hintFinal');
+    if (finalHintState === 'idle') {
+        finalHintState = 'countdown';
+        finalHintSeconds = 15;
+        btn.classList.add('countdown');
+        prikaziPoruku(porukaElement, `<strong>${t('final_hint_confirm_title')}</strong><br>${t('final_hint_confirm_answer')}`, 'info');
+        updateFinalHintButton();
+        finalHintTimer = setInterval(() => {
+            finalHintSeconds--;
+            updateFinalHintButton();
+            if (finalHintSeconds <= 0) {
+                clearInterval(finalHintTimer);
+                finalHintState = 'ready';
+                btn.classList.remove('countdown');
+                btn.textContent = t('btn_reveal_answer');
+                prikaziPoruku(porukaElement, t('final_hint_ready_answer'), 'info');
+            }
+        }, 1000);
+    } else if (finalHintState === 'countdown') {
+        clearInterval(finalHintTimer);
+        finalHintState = 'idle';
+        btn.classList.remove('countdown');
+        btn.textContent = t('final_hint_btn');
+        prikaziPoruku(porukaElement, t('final_hint_cancelled'), 'info');
+    } else if (finalHintState === 'ready') {
+        btn.disabled = true;
+        prikaziPoruku(porukaElement, `${t('final_hint_coordinates')}<br><span style="color:#f39c12; font-weight:bold; font-size:1.3em;">29 — 39 — 31</span>`, 'info');
+    }
+}
+
+function updateFinalHintButton() {
+    const btn = document.getElementById('hintFinal');
+    if (finalHintState === 'countdown') {
+        btn.textContent = t('final_hint_countdown', {s: finalHintSeconds});
+    }
+}
+        function proveri() {
+            const v1 = broj1.value.trim();
+            const v2 = broj2.value.trim();
+            const v3 = broj3.value.trim();
+            const tacan1 = '29';  
+            const tacan2 = '39';  
+            const tacan3 = '31';  
+            if (v1 === tacan1 && v2 === tacan2 && v3 === tacan3) {
+                prikaziPoruku(porukaElement, t('msg_correct'), 'success');
+                const hintBtn1 = document.getElementById('hint1');
+                const hintBtn2 = document.getElementById('hint2');
+                const hintBtn3 = document.getElementById('hint3');
+                const hintFinal = document.getElementById('hintFinal');
+                onemoguciInterakciju(proveriBtn, [broj1, broj2, broj3], [hintBtn1, hintBtn2, hintBtn3, hintFinal]);
+                oznaciKaoZavrseno(3);
+                setTimeout(() => { window.location.href = '04.html'; }, 4000);
+            } else {
+                prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
+            }
+        }
+    </script>
+</body>
+</html>
