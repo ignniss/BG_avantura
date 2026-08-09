@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            <!-- Scena 2: 01.png (21–42s) -->
+            <!-- Scena 2: 01.png (21–49s) -->
             <div class="scene scene-2">
                 <img src="01.png" alt="Увод 2" class="scene-img">
                 <div class="scene-text" id="text-2-1" data-i18n="intro_21">
@@ -127,6 +127,9 @@
                     Судба те је довела овамо. Пронађи изгубљене листове и врати граду његову причу.
                 </div>
                 <div class="scene-text" id="text-2-3" data-i18n="intro_23">
+                    Свака решена загонетка вратиће неколико листова у летопис.
+                </div>
+                <div class="scene-text" id="text-2-4" data-i18n="intro_24">
                     Тек када последњи лист буде враћен на своје место, летопис ће поново бити целовит.
                 </div>
             </div>
@@ -167,9 +170,10 @@
             // Scena 2: smena tekstova
             { time: 28000, action: () => smeniTekst('text-2-1', 'text-2-2') },
             { time: 35000, action: () => smeniTekst('text-2-2', 'text-2-3') },
+            { time: 42000, action: () => smeniTekst('text-2-3', 'text-2-4') },
 
             // Kraj uvoda → zaustavi zvuk i prelazak na prvi nivo
-            { time: 42000, action: () => { audio.pause(); window.location.href = '01.html'; } }
+            { time: 49000, action: () => { audio.pause(); window.location.href = '01.html'; } }
         ];
 
         function smeniTekst(stariId, noviId) {
