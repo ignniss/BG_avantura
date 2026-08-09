@@ -13,127 +13,137 @@
       background-repeat: no-repeat;
       background-attachment: fixed;
     }
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      max-width: 720px;
+      margin: 24px auto 0;
+      padding: 0 12px;
+    }
+    .rule-card {
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 215, 130, 0.2);
+      border-radius: 20px;
+      padding: 26px 28px;
+      color: #e0e0e0;
+      text-align: left;
+    }
+    .rule-card h2 {
+      color: #f5d77e;
+      font-size: 1.15em;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .rule-card p {
+      font-size: 0.95em;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .rule-card p:last-child {
+      margin-bottom: 0;
+    }
+    .rule-card ul {
+      margin: 10px 0 0 20px;
+      padding: 0;
+      list-style: disc;
+    }
+    .rule-card li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+      font-size: 0.95em;
+    }
+    .rule-card strong {
+      color: #f5d77e;
+      font-weight: 600;
+    }
+    .rule-card.final-card {
+      text-align: center;
+      border-color: rgba(245, 215, 126, 0.35);
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .rule-card.final-card h2 {
+      font-size: 1.4em;
+      margin-bottom: 10px;
+    }
+    #startBtn {
+      margin-top: 18px;
+      padding: 14px 36px;
+      font-size: 1.05em;
+      font-weight: 600;
+      border: none;
+      border-radius: 60px;
+      background: linear-gradient(145deg, #f5c542, #e3a82b);
+      color: #111a2b;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 16px rgba(227, 168, 43, 0.25);
+    }
+    @media (min-width: 640px) {
+      .cards-container {
+        grid-template-columns: 1fr 1fr;
+      }
+      .rule-card:nth-child(1),
+      .rule-card:nth-child(4) {
+        grid-column: span 2;
+      }
+    }
   </style>
 </head>
 <body>
   <script src="common.js"></script>
 
-  <!-- LOGO BAR -->
-  
-
   <div class="overlay-modern">
+    <div class="level-header">
     <div class="logo-inside">
-        <a href="index.html">
-            <img src="logo.png" alt="BG авантура лого" />
-        </a>
+        <a href="index.html"><img src="logo.png" alt="BG авантура лого" /></a>
     </div>
-    <div class="game-title" data-i18n="index_title">БГ АВАНТУРА</div>
+     <div >
+    <h1 class="nivo-naslov" data-i18n="index_title">БГ АВАНТУРА</h1>
     <div class="game-subtitle" data-i18n="index_subtitle">Откључај тајне Београда</div>
-
-    <div class="slider-wrapper">
-      <div class="nav left" onclick="prev()" id="navLeft">&#10094;</div>
-
-      <div id="slides">
-        <div class="slide active">
-          <h2 data-i18n="index_slide1_title">ПРАВИЛА ИГРЕ</h2>
-          <p data-i18n="index_slide1_text">Авантура се састоји од посећивања локација значајних за историју и културу Београда и Србије.</p>
-        </div>
-
-        <div class="slide">
-          <p data-i18n="index_slide2_text1">Свака локација је један задатак. Сваки задатак има две загонетке:</p>
-          <ul>
-            <li data-i18n="index_slide2_li1">прва загонетка открива следећу локацију</li>
-            <li data-i18n="index_slide2_li2">друга загонетка се решава на самој локацији</li>
-          </ul>
-        </div>
-
-        <div class="slide">
-          <h2 data-i18n="index_slide3_title">ПРОГРЕСИЈА</h2>
-          <p data-i18n="index_slide3_text">Да би се прешло на следећу локацију, потребно је испунити све захтеве на тренутној. Без прескакања!</p>
-        </div>
-
-        <div class="slide">
-          <h2 data-i18n="index_slide4_title">ТЕХНОЛОГИЈА</h2>
-          <p data-i18n="index_slide4_text">Игра је конципирана тако да је потребно повезивати закључке на основу информација које нису увек доступне на лицу места. Зато је неопходно коришћење интернета, навигације, мапа...</p>
-          <p style="margin-top: 15px;"><strong data-i18n="index_slide4_strong">Не препоручујемо коришћење вештачке интелигенције — тако игра губи драж.</strong></p>
-        </div>
-
-        <div class="slide">
-          <h2 data-i18n="index_slide5_title">УНОС ОДГОВОРА</h2>
-          <p data-i18n="index_slide5_text">Своје одговоре уносите у форме на одговарајућим страницама. Ако је одговор тачан, аутоматски прелазите на следећи ниво.</p>
-        </div>
-
-        <div class="slide final-slide">
-          <h2 data-i18n="index_slide6_title">СРЕЋНО!</h2>
-          <p style="margin-bottom: 25px;" data-i18n="index_slide6_text">Авантура почиње сада.</p>
-          <div style="text-align:center;">
-            <button id="startBtn" onclick="window.location.href='01.html'" data-i18n="index_start_btn">Започни игру</button>
-          </div>
-        </div>
+     </div>
+</div>
+    
+    <div class="cards-container">
+      <div class="rule-card">
+        <h2 data-i18n="index_slide1_title">ПРАВИЛА ИГРЕ</h2>
+        <p data-i18n="index_slide1_text">Авантура се састоји од посећивања локација значајних за историју и културу Београда и Србије.</p>
       </div>
 
-      <div class="nav right" onclick="next()" id="navRight">&#10095;</div>
+      <div class="rule-card">
+        <p data-i18n="index_slide2_text1">Свака локација је један задатак. Сваки задатак има две загонетке:</p>
+        <ul>
+          <li data-i18n="index_slide2_li1">прва загонетка открива следећу локацију</li>
+          <li data-i18n="index_slide2_li2">друга загонетка се решава на самој локацији</li>
+        </ul>
+      </div>
+
+      <div class="rule-card">
+        <h2 data-i18n="index_slide3_title">ПРОГРЕСИЈА</h2>
+        <p data-i18n="index_slide3_text">Да би се прешло на следећу локацију, потребно је испунити све захтеве на тренутној. Без прескакања!</p>
+      </div>
+
+      <div class="rule-card">
+        <h2 data-i18n="index_slide4_title">ТЕХНОЛОГИЈА</h2>
+        <p data-i18n="index_slide4_text">Игра је конципирана тако да је потребно повезивати закључке на основу информација које нису увек доступне на лицу места. Зато је неопходно коришћење интернета, навигације, мапа...</p>
+        <p><strong data-i18n="index_slide4_strong">Не препоручујемо коришћење вештачке интелигенције — тако игра губи драж.</strong></p>
+      </div>
+
+      <div class="rule-card">
+        <h2 data-i18n="index_slide5_title">УНОС ОДГОВОРА</h2>
+        <p data-i18n="index_slide5_text">Своје одговоре уносите у форме на одговарајућим страницама. Ако је одговор тачан, аутоматски прелазите на следећи ниво.</p>
+      </div>
+
+      <div class="rule-card final-card">
+        <h2 data-i18n="index_slide6_title">СРЕЋНО!</h2>
+        <p data-i18n="index_slide6_text">Авантура почиње сада.</p>
+        <button id="startBtn" onclick="window.location.href='01.html'" data-i18n="index_start_btn">Започни игру</button>
+      </div>
     </div>
-
-    <div class="dots-container" id="dotsContainer"></div>
   </div>
-
-  <script>
-    let current = 0;
-    const slides = document.querySelectorAll(".slide");
-    const navLeft = document.getElementById("navLeft");
-    const navRight = document.getElementById("navRight");
-    const dotsContainer = document.getElementById("dotsContainer");
-
-    slides.forEach((_, index) => {
-      const dot = document.createElement("button");
-      dot.className = "dot" + (index === 0 ? " active" : "");
-      dot.onclick = () => goTo(index);
-      dotsContainer.appendChild(dot);
-    });
-
-    const dots = document.querySelectorAll(".dot");
-
-    function updateUI() {
-      slides.forEach((s, i) => s.classList.toggle("active", i === current));
-      navLeft.classList.toggle("hidden", current === 0);
-      navRight.classList.toggle("hidden", current === slides.length - 1);
-      dots.forEach((d, i) => d.classList.toggle("active", i === current));
-    }
-
-    function next() {
-      if (current < slides.length - 1) { current++; updateUI(); }
-    }
-
-    function prev() {
-      if (current > 0) { current--; updateUI(); }
-    }
-
-    function goTo(index) {
-      current = index;
-      updateUI();
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
-    });
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const slidesContainer = document.getElementById("slides");
-
-    slidesContainer.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    slidesContainer.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      if (touchEndX < touchStartX - 50) next();
-      if (touchEndX > touchStartX + 50) prev();
-    }, { passive: true });
-
-    updateUI();
-  </script>
 </body>
 </html>

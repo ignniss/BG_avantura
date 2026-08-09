@@ -31,7 +31,7 @@ body {
    GLASSMORPHISM OVERLAY
    ============================================ */
 .overlay-modern {
-    background: rgba(20, 20, 30, 0.65);
+    background: rgba(20, 20, 30, 0.5);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -58,7 +58,7 @@ body {
 .progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, rgb(255, 187, 0), #d6e622);
+    background: #ffff02;
     border-radius: 2px;
     transition: width 0.5s ease;
 }
@@ -728,3 +728,100 @@ body {
 .logo-inside img:hover {
     transform: scale(1.02);
 }
+ /* === MOBILNI PRVO: logo gore, naslov ispod === */
+.level-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+.level-header .logo-inside img {
+    height: 90px;
+    width: auto;
+    display: block;
+}
+.level-header .nivo-naslov {
+    margin: 0;
+    font-size: 2em;
+    line-height: 1.2;
+}
+
+/* === TABLET I DESKTOP: naslov pored loga, desno === */
+@media (min-width: 768px) {
+    .level-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+    
+    .level-header .nivo-naslov {
+        font-size: 2em;
+        text-align: center;
+        flex: 1;
+    }
+}
+.location-info-box {
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 215, 130, 0.2);
+            border-radius: 16px;
+            margin: 18px auto;
+            max-width: 680px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .location-toggle-btn {
+            width: 100%;
+            background: rgba(255, 215, 130, 0.08);
+            border: none;
+            color: #f5d77e;
+            font-size: 1em;
+            font-weight: 400;
+            padding: 14px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        .location-toggle-btn:hover, .location-toggle-btn:active {
+            background: rgba(255, 215, 130, 0.15);
+        }
+        .location-toggle-btn .arrow {
+            transition: transform 0.3s ease;
+            font-size: 0.8em;
+            pointer-events: none;
+        }
+        .location-toggle-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+        .location-text {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.4s ease;
+            padding: 0 22px;
+            color: #e0e0e0;
+            font-size: .9em;
+            line-height: 1.7;
+            text-align: left;
+        }
+        .location-text.open {
+            max-height: 1200px;
+            padding: 18px 22px 22px;
+        }
+        .location-text p {
+            margin-bottom: 10px;
+        }
+        .location-text p:last-child {
+            margin-bottom: 0;
+        }

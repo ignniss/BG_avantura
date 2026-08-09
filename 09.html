@@ -2,12 +2,12 @@
 <html lang="sr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>БГА 09</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background-image: url('./bg1.jpg');
+            background-image: url('./skadarlija.jpg');
             background-size: cover;
             background-position: center top;
             background-repeat: no-repeat;
@@ -26,6 +26,69 @@
             padding: 8px;
             object-fit: contain;
         }
+        .location-info-box {
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 215, 130, 0.2);
+            border-radius: 16px;
+            margin: 18px auto;
+            max-width: 680px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .location-toggle-btn {
+            width: 100%;
+            background: rgba(255, 215, 130, 0.08);
+            border: none;
+            color: #f5d77e;
+            font-size: 1em;
+            font-weight: 400;
+            padding: 14px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        .location-toggle-btn:hover, .location-toggle-btn:active {
+            background: rgba(255, 215, 130, 0.15);
+        }
+        .location-toggle-btn .arrow {
+            transition: transform 0.3s ease;
+            font-size: 0.8em;
+            pointer-events: none;
+        }
+        .location-toggle-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+        .location-text {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.4s ease;
+            padding: 0 22px;
+            color: #e0e0e0;
+            font-size: .9em;
+            line-height: 1.7;
+            text-align: left;
+        }
+        .location-text.open {
+            max-height: 1200px;
+            padding: 18px 22px 22px;
+        }
+        .location-text p {
+            margin-bottom: 10px;
+        }
+        .location-text p:last-child {
+            margin-bottom: 0;
+        }
+       
     </style>
 </head>
 <body style="display: none;" id="mainBody">
@@ -38,14 +101,13 @@
     </script>
 
     <div class="overlay-modern">
-        <div class="logo-inside">
-        <a href="index.html">
-            <img src="logo.png" alt="BG авантура лого" />
-        </a>
+        <div class="level-header">
+    <div class="logo-inside">
+        <a href="index.html"><img src="logo.png" alt="BG авантура лого" /></a>
     </div>
-        <div class="progress-track">
-            <div class="progress-fill"></div>
-        </div>
+    <h1 class="nivo-naslov" data-i18n="nivo9_title">ТАМО ГДЕ СЕ ВЕЛИКАНИ СРЕЋУ</h1>
+</div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
 
         <div class="header-bar">
             <div class="timer-box">
@@ -56,7 +118,15 @@
             <div class="level-badge"></div>
         </div>
 
-        <h1 class="nivo-naslov" data-i18n="nivo9_title">ТАМО ГДЕ СЕ ВЕЛИКАНИ СРЕЋУ</h1>
+       
+
+        <!-- INFO O LOKACIJI -->
+        <div class="location-info-box">
+            <button type="button" class="location-toggle-btn" id="locToggleBtn">
+                <span data-i18n="btn_location9">О Скадарлији</span> <span class="arrow">▼</span>
+            </button>
+            <div data-i18n="nivo9_location" class="location-text" id="locText"></div>
+        </div>
 
         <div class="pitanje-card">
             <p data-i18n-html="nivo9_poem">Песник славни, у капуту бронзаном,<br>И после живота стражу чува.<br>Куда му поглед упорно ходи,<br>тамо следећи корак те води.<br>Имена велика ту прошлост дозива,<br>у знацима немим порука се скрива.</p>
@@ -65,13 +135,13 @@
         <img src="vlkn.png" alt="Загонетка" class="puzzle-img">
 
         <div class="hintovi">
-            <button class="hint-btn" id="hint1" onclick="pokaziHint(1)" data-i18n="btn_help1">ПОМОЋ 1</button>
-            <button class="hint-btn" id="hint2" onclick="pokaziHint(2)" data-i18n="btn_help2">ПОМОЋ 2</button>
-            <button class="hint-btn" id="hint3" onclick="pokaziHint(3)" data-i18n="btn_help3">ПОМОЋ 3</button>
-            <button class="hint-btn" id="hint4" onclick="pokaziHint(4)" data-i18n="btn_help4">ПОМОЋ 4</button>
-            <button class="hint-btn" id="hint5" onclick="pokaziHint(5)" data-i18n="btn_help5">ПОМОЋ 5</button>
-            <button class="hint-btn" id="hint6" onclick="pokaziHint(6)" data-i18n="btn_help6">ПОМОЋ 6</button>
-            <button class="hint-btn-final" id="hintFinal" onclick="pokaziFinalHint()" data-i18n="final_hint_btn">КОНАЧНА ПОМОЋ</button>
+            <button class="hint-btn" id="hint1" data-i18n="btn_help1">ПОМОЋ 1</button>
+            <button class="hint-btn" id="hint2" data-i18n="btn_help2">ПОМОЋ 2</button>
+            <button class="hint-btn" id="hint3" data-i18n="btn_help3">ПОМОЋ 3</button>
+            <button class="hint-btn" id="hint4" data-i18n="btn_help4">ПОМОЋ 4</button>
+            <button class="hint-btn" id="hint5" data-i18n="btn_help5">ПОМОЋ 5</button>
+            <button class="hint-btn" id="hint6" data-i18n="btn_help6">ПОМОЋ 6</button>
+            <button class="hint-btn-final" id="hintFinal" data-i18n="final_hint_btn">КОНАЧНА ПОМОЋ</button>
         </div>
 
         <div class="forma">
@@ -80,17 +150,16 @@
 
         <div id="poruka" class="hint-poruka" style="display: none;"></div>
 
-        <button class="proveri-btn" id="proveriBtn" onclick="proveri()" data-i18n="btn_check">ПРОВЕРИ ОДГОВОР</button>
-
+        <button class="proveri-btn" id="proveriBtn" data-i18n="btn_check">ПРОВЕРИ ОДГОВОР</button>
     </div>
 
     <script>
-        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
         inicijalizujTimer(document.getElementById('tajmer'));
 
         const porukaElement = document.getElementById('poruka');
         const proveriBtn = document.getElementById('proveriBtn');
         const input = document.getElementById('odgovorInput');
+        const locToggleBtn = document.getElementById('locToggleBtn');
 
         let finalHintTimer = null;
         let finalHintSeconds = 0;
@@ -103,6 +172,71 @@
         input.disabled = false;
 
         postaviEnterHandler(input, proveri);
+
+        // === MOBILNI FIX ===
+        locToggleBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            toggleLocationInfo();
+        }, {passive: false});
+        locToggleBtn.addEventListener('click', toggleLocationInfo);
+
+        for (let i = 1; i <= 6; i++) {
+            document.getElementById('hint' + i).addEventListener('click', (function(br) {
+                return function() { pokaziHint(br); };
+            })(i));
+        }
+        document.getElementById('hintFinal').addEventListener('click', pokaziFinalHint);
+        proveriBtn.addEventListener('click', proveri);
+
+        // === LOKACIJA: MutationObserver ===
+        const locText = document.getElementById('locText');
+        let lokacijaObradjena = false;
+
+        function obradiLokaciju() {
+            if (lokacijaObradjena) return;
+            const rawText = locText.textContent.trim();
+            const html = locText.innerHTML.trim();
+
+            if ((!rawText || rawText === 'nivo9_location') && !html.includes('<br')) {
+                return;
+            }
+
+            lokacijaObradjena = true;
+
+            if (rawText.includes('<br')) {
+                const paragraphs = rawText.split(/<br\s*\/?>/i);
+                locText.innerHTML = paragraphs.map(p => p.trim() ? `<p>${p.trim()}</p>` : '').join('');
+                return;
+            }
+
+            if (html.includes('<br')) {
+                const paragraphs = html.split(/<br\s*\/?>/i);
+                locText.innerHTML = paragraphs.map(p => {
+                    const clean = p.replace(/<[^>]+>/g, '').trim();
+                    return clean ? `<p>${clean}</p>` : '';
+                }).join('');
+                return;
+            }
+
+            if (rawText.includes('\n')) {
+                const paragraphs = rawText.split(/\n+/);
+                locText.innerHTML = paragraphs.map(p => p.trim() ? `<p>${p.trim()}</p>` : '').join('');
+                return;
+            }
+
+            locText.innerHTML = `<p>${rawText}</p>`;
+        }
+
+        obradiLokaciju();
+        const observer = new MutationObserver(obradiLokaciju);
+        observer.observe(locText, { childList: true, subtree: true, characterData: true });
+
+        function toggleLocationInfo() {
+            const btn = document.getElementById('locToggleBtn');
+            const text = document.getElementById('locText');
+            btn.classList.toggle('open');
+            text.classList.toggle('open');
+        }
 
         function pokaziHint(br) {
             const btn = document.getElementById('hint' + br);
@@ -158,7 +292,6 @@
                 return;
             }
 
-            // Transliteracija
             unos = unos
                 .replace(/ћ/g, 'ć').replace(/ч/g, 'č').replace(/џ/g, 'dž')
                 .replace(/ш/g, 'š').replace(/ђ/g, 'đ').replace(/ж/g, 'ž')

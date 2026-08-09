@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БГА Увод</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('./bg.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .intro-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 55vh;
+            min-height: 380px;
+            margin: 20px auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            background: #000;
+        }
+        .scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        .scene.active {
+            opacity: 1;
+        }
+        .scene-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .scene-text {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            font-size: 1.4em;
+            line-height: 1.6;
+            color: #f5f5f5;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.95), 0 0 20px rgba(0,0,0,0.8);
+            text-align: center;
+            pointer-events: none;
+        }
+        .scene-text.active {
+            opacity: 1;
+        }
+        .intro-skip {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .skip-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #bbb;
+            padding: 10px 28px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .skip-btn:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+            border-color: rgba(255,255,255,0.5);
+        }
+    </style>
+<base target="_blank">
+<base target="_blank">
+</head>
+<body>
+    <script src="common.js"></script>
+
+    <audio id="introAudio" src="intro.mp3" preload="auto"></audio>
+
+    <div class="overlay-modern">
+
+
+        <div class="header-bar" style="justify-content: center;">
+            <div class="timer-box">
+                <span class="timer-icon">⏱️</span>
+                <div class="tajmer" id="tajmer">0:00:00</div>
+            </div>
+        </div>
+
+
+
+        <div class="intro-container">
+            <!-- Scena 1: 02.jpg (0–14s) -->
+            <div class="scene scene-1 active">
+                <img src="02.jpg" alt="Увод 1" class="scene-img">
+                <div class="scene-text active" id="text-1-1">
+                    Добро напредујеш, путниче намерниче.
+                </div>
+                <div class="scene-text" id="text-1-2">
+                    Седам листова мог летописа већ је враћено, али многе приче још увек чекају да буду откривене.
+                </div>
+            </div>
+
+            <!-- Scena 2: 02.png (14–28s) -->
+            <div class="scene scene-2">
+                <img src="02.png" alt="Увод 2" class="scene-img">
+                <div class="scene-text" id="text-2-1">
+                    Не трагај више само за местима — слушај гласове оних који су овим улицама ходили.
+                </div>
+                <div class="scene-text" id="text-2-2">
+                    Јер град не чува своју прошлост само у камену, већ и у именима људи који су га стварали.
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-skip">
+            <button class="skip-btn" onclick="preskociIntro()">ПРЕСКОЧИ</button>
+        </div>
+    </div>
+
+    <script>
+        // Pokreni tajmer
+        inicijalizujTimer(document.getElementById('tajmer'));
+
+        // Pokreni pozadinsku muziku
+        const audio = document.getElementById('introAudio');
+        audio.play().catch(() => {});
+
+        // Zaustavi zvuk pri napustanju stranice
+        window.addEventListener('beforeunload', () => {
+            audio.pause();
+        });
+
+        // Sekvenca događaja
+        const timings = [
+            // Scena 1: smena tekstova
+            { time: 7000,  action: () => smeniTekst('text-1-1', 'text-1-2') },
+
+            // Prelaz scena 1 → scena 2
+            { time: 14000, action: () => {
+                document.querySelector('.scene-1').classList.remove('active');
+                document.querySelector('.scene-2').classList.add('active');
+                document.getElementById('text-1-2').classList.remove('active');
+                document.getElementById('text-2-1').classList.add('active');
+            }},
+
+            // Scena 2: smena tekstova
+            { time: 21000, action: () => smeniTekst('text-2-1', 'text-2-2') },
+
+            // Kraj uvoda → zaustavi zvuk i prelazak na osmi nivo
+            { time: 28000, action: () => { audio.pause(); window.location.href = '08.html'; } }
+        ];
+
+        function smeniTekst(stariId, noviId) {
+            const stari = document.getElementById(stariId);
+            const novi = document.getElementById(noviId);
+            if (stari) stari.classList.remove('active');
+            if (novi) novi.classList.add('active');
+        }
+
+        let timers = [];
+        timings.forEach(t => {
+            timers.push(setTimeout(t.action, t.time));
+        });
+
+        function preskociIntro() {
+            timers.forEach(id => clearTimeout(id));
+            audio.pause();
+            window.location.href = '08.html';
+        }
+    </script>
+</body>
+</html>

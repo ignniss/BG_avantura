@@ -17,10 +17,6 @@
             text-align: center;
             padding: 30px 20px;
         }
-        .trophy {
-            font-size: 4em;
-            margin-bottom: 15px;
-        }
         .final-time {
             font-size: 1.8em;
             color: #f39c12;
@@ -59,6 +55,7 @@
             box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
         }
     </style>
+<base target="_blank">
 </head>
 <body style="display: none;" id="mainBody">
     <script src="common.js"></script>
@@ -71,26 +68,24 @@
 
     <div class="overlay-modern">
         <div class="logo-inside">
-        <a href="index.html">
-            <img src="logo.png" alt="BG авантура лого" />
-        </a>
-    </div>
-        <div class="progress-track">
-            <div class="progress-fill"></div>
+            <a href="index.html"><img src="logo.png" alt="BG авантура лого" /></a>
         </div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
 
         <div class="header-bar" style="justify-content: center;">
-            
+            <div class="timer-box">
+                <span class="timer-icon">⏱️</span>
+                <div class="tajmer" id="tajmer">0:00:00</div>
+            </div>
         </div>
 
         <div class="final-card">
-            <div class="trophy">🏆</div>
             <h1 class="nivo-naslov" data-i18n="final_title" style="font-size: 2em; margin-bottom: 10px;">ЧЕСТИТАМО!</h1>
             <p data-i18n="final_subtitle" style="font-size: 1.2em; color: #f39c12; font-weight: bold; margin-bottom: 20px;">Успешно сте завршили БГ Авантуру!</p>
-            
+
             <div class="final-time-label" data-i18n="final_time_label">ВАШЕ ВРЕМЕ</div>
             <div class="final-time" id="finalTime">0:00:00</div>
-            
+
             <p class="final-message" data-i18n-html="final_text">
                 Открили сте делић тајни које Београд крије.<br>
                 Надамо се да сте уживали у авантури и да сте<br>
@@ -104,26 +99,51 @@
     </div>
 
     <script>
-        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
-        inicijalizujTimer(document.getElementById('tajmer'));
+    // Zaustavi tajmer
+    if (typeof zaustaviTimer === 'function') {
+        zaustaviTimer();
+    }
 
-        const tajmerElement = document.getElementById('tajmer');
-        const finalTimeElement = document.getElementById('finalTime');
-        
-        function syncFinalTime() {
-            finalTimeElement.textContent = tajmerElement.textContent;
-        }
-        
-        syncFinalTime();
-        setInterval(syncFinalTime, 1000);
+    const tajmerElement = document.getElementById('tajmer');
+    const finalTimeElement = document.getElementById('finalTime');
 
-        function ponovoIgraj() {
-            if (confirm('Да ли сте сигурни да желите да почнете испочетка? Сва постигнућа ће бити обрисана.')) {
-                localStorage.removeItem('escape_room_vreme_pocetak');
-                localStorage.removeItem('escape_room_completed');
-                window.location.href = 'index.html';
-            }
+    // Ista logika kao intro2 — pročitaj sačuvano ili izračunaj i SAČUVAJ
+    let krajnoVreme = localStorage.getItem('escape_room_vreme_kraj');
+
+    if (!krajnoVreme) {
+        const pocetak = localStorage.getItem('escape_room_vreme_pocetak');
+        if (pocetak) {
+            const protekloMs = Date.now() - parseInt(pocetak);
+            const sekundeUkupno = Math.floor(protekloMs / 1000);
+            const sati = Math.floor(sekundeUkupno / 3600);
+            const minuti = Math.floor((sekundeUkupno % 3600) / 60);
+            const sekunde = sekundeUkupno % 60;
+            krajnoVreme = `${sati}:${minuti.toString().padStart(2, '0')}:${sekunde.toString().padStart(2, '0')}`;
+            localStorage.setItem('escape_room_vreme_kraj', krajnoVreme);
         }
-    </script>
+    }
+
+    if (tajmerElement && krajnoVreme) {
+        tajmerElement.textContent = krajnoVreme;
+    }
+    if (finalTimeElement && krajnoVreme) {
+        finalTimeElement.textContent = krajnoVreme;
+    }
+
+    function ponovoIgraj() {
+        localStorage.removeItem('escape_room_completed');
+        for (let i = 1; i <= 13; i++) {
+            localStorage.removeItem('escape_room_completed_' + i);
+            localStorage.removeItem('escape_room_completed' + i);
+            localStorage.removeItem('level_' + i + '_completed');
+            localStorage.removeItem('completed_' + i);
+        }
+        localStorage.removeItem('escape_room_vreme_pocetak');
+        localStorage.removeItem('escape_room_vreme_kraj');
+        localStorage.removeItem('escape_room_started');
+        localStorage.removeItem('escape_room_intro_watched');
+        window.location.href = 'index.html';
+    }
+</script>
 </body>
 </html>

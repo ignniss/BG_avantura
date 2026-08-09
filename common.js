@@ -6,6 +6,7 @@ const UKUPNO_NIVOA = 13;
 
 let i18nData = {};
 let trenutniJezik = localStorage.getItem(STORAGE_JEZIK_KEY) || 'sr';
+let tajmerInterval = null;
 
 async function ucitajJezik(jezik) {
     trenutniJezik = jezik;
@@ -33,7 +34,6 @@ async function ucitajJezik(jezik) {
         if (i18nData[key]) el.placeholder = i18nData[key];
     });
 
-    // Ažuriraj level badge i progress nakon učitavanja prevoda
     if (typeof window.trenutniNivo !== 'undefined' && typeof postaviProgress === 'function') {
         postaviProgress(window.trenutniNivo);
     }
@@ -55,7 +55,6 @@ function izaberiJezik(jezik) {
     });
 }
 
-// Inicijalizuj jezik na svakoj stranici
 document.addEventListener('DOMContentLoaded', () => {
     ucitajJezik(trenutniJezik);
 });
@@ -79,8 +78,16 @@ function inicijalizujTimer(tajmerElement) {
         tajmerElement.textContent = `${sati}:${minuti.toString().padStart(2, '0')}:${sekunde.toString().padStart(2, '0')}`;
     }
 
+    if (tajmerInterval) clearInterval(tajmerInterval);
     azurirajTajmer();
-    setInterval(azurirajTajmer, 1000);
+    tajmerInterval = setInterval(azurirajTajmer, 1000);
+}
+
+function zaustaviTimer() {
+    if (tajmerInterval) {
+        clearInterval(tajmerInterval);
+        tajmerInterval = null;
+    }
 }
 
 function restartujVreme(porukaElement) {

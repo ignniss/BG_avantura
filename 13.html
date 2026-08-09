@@ -63,6 +63,7 @@
             font-weight: bold;
         }
     </style>
+<base target="_blank">
 </head>
 <body style="display: none;" id="mainBody">
     <script src="common.js"></script>
@@ -74,11 +75,12 @@
     </script>
 
     <div class="overlay-modern">
-        <div class="logo-inside">
-        <a href="index.html">
-            <img src="logo.png" alt="BG авантура лого" />
-        </a>
+        <div class="level-header">
+    <div class="logo-inside">
+        <a href="index.html"><img src="logo.png" alt="BG авантура лого" /></a>
     </div>
+    <h1 class="nivo-naslov" data-i18n="nivo13_title">ПОГЛЕД НА ПРОШЛОСТ</h1>
+</div>
         <div class="progress-track">
             <div class="progress-fill"></div>
         </div>
@@ -92,9 +94,12 @@
             <div class="level-badge"></div>
         </div>
 
-        <h1 class="nivo-naslov" data-i18n="nivo13_title">ПОГЛЕД НА ПРОШЛОСТ</h1>
-
-        
+        <div class="location-info-box">
+            <button class="location-toggle-btn" id="locToggleBtn" onclick="toggleLocationInfo()">
+                <span data-i18n="btn_location13">О Цркви Светог Марка</span> <span class="arrow">▼</span>
+            </button>
+            <div data-i18n="nivo13_location" class="location-text" id="locText"></div>
+        </div>
 
         <div class="puzzle-gallery">
             <div class="puzzle-item">
@@ -144,7 +149,7 @@
     </div>
 
     <script>
-        // postaviProgress se poziva iz common.js nakon učitavanja prevoda
+        postaviProgress(trenutniNivo);
         inicijalizujTimer(document.getElementById('tajmer'));
 
         const porukaElement = document.getElementById('poruka');
@@ -162,6 +167,37 @@
         input.disabled = false;
 
         postaviEnterHandler(input, proveri);
+
+        function toggleLocationInfo() {
+            const btn = document.getElementById('locToggleBtn');
+            const text = document.getElementById('locText');
+            btn.classList.toggle('open');
+            text.classList.toggle('open');
+        }
+
+        (function obradiLokaciju() {
+            const locText = document.getElementById('locText');
+            const rawText = locText.textContent.trim();
+            if (!rawText || rawText === 'nivo13_location') {
+                setTimeout(obradiLokaciju, 100);
+                return;
+            }
+            if (rawText.includes('<br')) {
+                const paragraphs = rawText.split(/<br\s*\/?>/i);
+                locText.innerHTML = paragraphs.map(p => p.trim() ? `<p>${p.trim()}</p>` : '').join('');
+            } else if (locText.innerHTML.includes('<br')) {
+                const paragraphs = locText.innerHTML.split(/<br\s*\/?>/i);
+                locText.innerHTML = paragraphs.map(p => {
+                    const clean = p.replace(/<[^>]+>/g, '').trim();
+                    return clean ? `<p>${clean}</p>` : '';
+                }).join('');
+            } else if (rawText.includes('\n')) {
+                const paragraphs = rawText.split(/\n+/);
+                locText.innerHTML = paragraphs.map(p => p.trim() ? `<p>${p.trim()}</p>` : '').join('');
+            } else {
+                locText.innerHTML = `<p>${rawText}</p>`;
+            }
+        })();
 
         function pokaziHint(br) {
             const btn = document.getElementById('hint' + br);
@@ -210,33 +246,32 @@
         }
 
         function proveri() {
-    let unos = input.value.trim().toLowerCase();
-    if (unos === '') {
-        prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
-        return;
-    }
+            let unos = input.value.trim().toLowerCase();
+            if (unos === '') {
+                prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
+                return;
+            }
 
-    // Zamena samo ćiriličnih O i K sa latiničnim
-    unos = unos.replace(/о/g, 'o').replace(/к/g, 'k');
-    
-    const normalizovan = unos.replace(/\s+/g, '');
+            unos = unos.replace(/о/g, 'o').replace(/к/g, 'k');
+            
+            const normalizovan = unos.replace(/\s+/g, '');
 
-    if (normalizovan === 'oko') {
-        prikaziPoruku(porukaElement, t('msg_correct'), 'success');
-        const hintBtn1 = document.getElementById('hint1');
-        const hintBtn2 = document.getElementById('hint2');
-        const hintBtn3 = document.getElementById('hint3');
-        const hintBtn4 = document.getElementById('hint4');
-        const hintBtn5 = document.getElementById('hint5');
-        const hintBtn6 = document.getElementById('hint6');
-        const hintFinal = document.getElementById('hintFinal');
-        onemoguciInterakciju(proveriBtn, input, [hintBtn1, hintBtn2, hintBtn3, hintBtn4, hintBtn5, hintBtn6, hintFinal]);
-        oznaciKaoZavrseno(13);
-        setTimeout(() => { window.location.href = '14.html'; }, 4000);
-    } else {
-        prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
-    }
-}
+            if (normalizovan === 'oko') {
+                prikaziPoruku(porukaElement, t('msg_correct'), 'success');
+                const hintBtn1 = document.getElementById('hint1');
+                const hintBtn2 = document.getElementById('hint2');
+                const hintBtn3 = document.getElementById('hint3');
+                const hintBtn4 = document.getElementById('hint4');
+                const hintBtn5 = document.getElementById('hint5');
+                const hintBtn6 = document.getElementById('hint6');
+                const hintFinal = document.getElementById('hintFinal');
+                onemoguciInterakciju(proveriBtn, input, [hintBtn1, hintBtn2, hintBtn3, hintBtn4, hintBtn5, hintBtn6, hintFinal]);
+                oznaciKaoZavrseno(13);
+                setTimeout(() => { window.location.href = 'intro2.html'; }, 4000);
+            } else {
+                prikaziPoruku(porukaElement, t('msg_wrong'), 'error');
+            }
+        }
     </script>
 </body>
 </html>
