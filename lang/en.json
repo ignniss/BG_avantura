@@ -189,9 +189,25 @@
  "intro_13":"Once, I would record all that befell this city: its days of glory and its days of sorrow, the names of the renowned and the deeds of the forgotten.",
  "intro_21":"But time scattered my chronicle. Its pages were strewn across the city like autumn leaves, and with them, its memory began to fade.",
 "intro_22":"Fate has brought you here. Find the lost pages and restore the city's story.",
-"intro_23":"Only when the final page is returned to its place will the chronicle be whole once more."
+"intro_23":"Each puzzle you solve will restore several pages to the chronicle.",
+"intro_24":"Only when the final page is returned to its place will the chronicle be whole once more.",
+
+"intro1_11":"You fare well, wayfaring traveler.",
+"intro1_12":"Many leaves have already found their way back into my chronicle, yet many a tale still lies in the shadow of oblivion, awaiting one who shall bring it once more into the light.",
+"intro1_21":"Seek no longer only the places — listen to the voices of those who once walked these streets.",
+"intro1_22":"For a city keeps its past not only in stone, but also in the names of those who shaped it.",
+
+"intro2_11":"Traveler, few are those to whom Time entrusts its lost pages.",
+"intro2_12":"Today, you have shown that they may safely rest in your hands.",
+"intro2_21":"The chronicle is whole once more, and the memory of this city preserved anew.",
+"intro2_22":"May every journey that lies ahead bring you another tale worthy of remembrance.",
 
 
+"final_text":"You have uncovered a glimpse of the secrets Belgrade holds.<br>We hope you enjoyed the adventure<br>and discovered the city in a whole new way. <br>Thank you for playing! <br>Tell us about your experience at <a href=\"mailto:bg.avantura@gmail.com\">bg.avantura@gmail.com</a> <br>Your suggestions and feedback are invaluable to us. <br>See you in another adventure...",
+"final_time_label":"YOUR TIME",
+"final_title":"CONGRATULATIONS!",
+"final_subtitle":"You have successfully completed the BG Adventure",
+"final_restart_btn":"PLAY AGAIN"
 }
 
 
